@@ -12,6 +12,7 @@ use Illuminate\Support\Traits\Macroable;
 use Illuminate\Foundation\Testing\Assert as PHPUnit;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Illuminate\Foundation\Testing\Constraints\SeeInOrder;
+use Symfony\Component\HttpFoundation\Response as BaseResponse;
 
 /**
  * @mixin \Illuminate\Http\Response
@@ -113,6 +114,21 @@ class TestResponse
         PHPUnit::assertTrue(
             $this->isForbidden(),
             'Response status code ['.$this->getStatusCode().'] is not a forbidden status code.'
+        );
+
+        return $this;
+    }
+
+    /**
+     * Assert that the response has an unauthorized status code.
+     *
+     * @return $this
+     */
+    public function assertUnauthorized()
+    {
+        PHPUnit::assertTrue(
+            BaseResponse::HTTP_UNAUTHORIZED === $this->getStatusCode(),
+            'Response status code ['.$this->getStatusCode().'] is not an unauthorized status code.'
         );
 
         return $this;
